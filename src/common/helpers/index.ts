@@ -11,15 +11,14 @@ interface ParsedUrlProps {
 export const formatBlogSlug = (slug: string) => slug?.slice(0, -5);
 
 export const formatDate = (date: string, type = 'MMMM dd, yyyy') => {
-  if (!date) {
-    return '';
-  }
+  if (!date) return '';
 
-  const formattedDate = format(
-    utcToZonedTime(parseISO(date), 'Asia/Jakarta'),
-    type,
-  );
-  return formattedDate;
+  const parsedDate = new Date(date);
+  if (isNaN(parsedDate.getTime())) return '';
+
+  const zonedDate = utcToZonedTime(parsedDate, 'Asia/Manila');
+
+  return format(zonedDate, type);
 };
 
 export const groupContentByChapter = (

@@ -156,3 +156,38 @@ export type CommentItemProps = {
   user: UserProps;
   children: Comment[];
 };
+
+export type MediumFeed = {
+  items: MediumPost[];
+  feedUrl: string;
+  image: MediumFeedImage;
+  paginationLinks: {
+    self: string;
+  };
+  title: string;
+  description: string;
+  webMaster: string;
+  generator: string;
+  link: string;
+  lastBuildDate: string;
+};
+
+export type MediumPost = {
+  creator: string;
+  title: string;
+  link: string;
+  pubDate: string;
+  isoDate: string;
+  guid: string;
+  categories: string[];
+
+  'content:encoded'?: string;
+  'content:encodedSnippet'?: string;
+  'dc:creator'?: string;
+};
+
+export interface MediumFeedImage {
+  link: string;
+  url: string;
+  title: string;
+}

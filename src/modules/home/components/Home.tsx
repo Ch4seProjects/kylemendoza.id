@@ -10,9 +10,9 @@ const Home = () => {
     <>
       <Introduction />
       <Breakline className='mb-7 mt-8' />
-      <BlogPreview />
-      <Breakline className='my-8' />
       <SkillsSection />
+      <Breakline className='my-8' />
+      <BlogPreview />
       <Breakline className='my-8' />
       <Services />
     </>

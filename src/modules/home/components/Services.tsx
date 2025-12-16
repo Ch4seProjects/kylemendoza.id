@@ -11,9 +11,11 @@ const Services = () => {
       <div className='space-y-3'>
         <SectionHeading title="What I've been working on" />
         <p className='leading-[1.8] text-neutral-800 dark:text-neutral-300 md:leading-loose'>
-          I assist brands, companies, institutions, and startups in creating
-          exceptional digital experiences for their businesses through strategic
-          development services.
+          I take on commissioned projects, helping clients bring their web ideas
+          to life through thoughtful and efficient development. Alongside my
+          work, I&apos;m continuously exploring and learning new software tools
+          and technologies, furthering my expertise in modern web development
+          and software engineering.
         </p>
       </div>
       <Card className='space-y-4 rounded-xl border bg-neutral-100 p-8 dark:border-none dark:bg-[#1e1e1e]'>

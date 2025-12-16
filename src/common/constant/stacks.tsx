@@ -39,7 +39,7 @@ export type stacksProps = {
 const iconSize = 20;
 
 export const STACKS: stacksProps = {
-  PHP: <SiPhp size={iconSize} className='text-blue-500' />,
+  // PHP: <SiPhp size={iconSize} className='text-blue-500' />,
   JavaScript: <SiJavascript size={iconSize} className='text-yellow-400' />,
   TypeScript: <SiTypescript size={iconSize} className='text-blue-400' />,
   'Next.js': <SiNextdotjs size={iconSize} />,
@@ -50,8 +50,8 @@ export const STACKS: stacksProps = {
   ),
   GraphQL: <SiGraphql size={iconSize} className='text-pink-600' />,
   Apollo: <SiApollographql size={iconSize} />,
-  WordPress: <SiWordpress size={iconSize} />,
-  Laravel: <SiLaravel size={iconSize} className='text-red-500' />,
+  // WordPress: <SiWordpress size={iconSize} />,
+  // Laravel: <SiLaravel size={iconSize} className='text-red-500' />,
   'Material UI': <SiMui size={iconSize} className='text-sky-400' />,
   Vite: <SiVite size={iconSize} className='text-purple-500' />,
   Prisma: <SiPrisma size={iconSize} className='text-emerald-500' />,
@@ -59,11 +59,11 @@ export const STACKS: stacksProps = {
   'Artificial Intelligence': (
     <BsRobot size={iconSize} className='text-rose-500' />
   ),
-  Angular: <SiAngular size={iconSize} className='text-red-500' />,
-  'Vue.js': <SiVuedotjs size={iconSize} className='text-green-500' />,
-  'Nuxt.js': <SiNuxtdotjs size={iconSize} className='text-green-400' />,
+  // Angular: <SiAngular size={iconSize} className='text-red-500' />,
+  // 'Vue.js': <SiVuedotjs size={iconSize} className='text-green-500' />,
+  // 'Nuxt.js': <SiNuxtdotjs size={iconSize} className='text-green-400' />,
   'Node.js': <SiNodedotjs size={iconSize} className='text-green-600' />,
-  Gatsby: <SiGatsby size={iconSize} className='text-purple-600' />,
+  // Gatsby: <SiGatsby size={iconSize} className='text-purple-600' />,
   Redux: <SiRedux size={iconSize} className='text-purple-500' />,
   Webpack: <SiWebpack size={iconSize} className='text-blue-500' />,
   'Styled Components': (
