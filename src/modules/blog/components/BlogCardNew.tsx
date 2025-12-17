@@ -34,7 +34,7 @@ const BlogCardNew = ({
 
   const tagList = categories || [];
 
-  const defaultImage = '/images/react-placeholder.webp';
+  const defaultImage = '/images/blog-placeholder.png';
 
   const slideDownVariants = {
     hidden: { opacity: 0, y: -10 },
@@ -43,10 +43,10 @@ const BlogCardNew = ({
 
   const urlWithoutQuery = link.split('?')[0];
   const slug = urlWithoutQuery.split('/').pop();
+  const id = link.split('?')[0].split('-').pop();
 
   return (
-    // <Link href={`/blog/${slug}?id=${id}`}>
-    <Link href={`/blog/${slug}`}>
+    <Link href={`/blog/${slug}?id=${id}`}>
       <Card
         className='group relative flex h-[400px] w-full flex-col rounded-lg border shadow-sm dark:border-neutral-800'
         onMouseEnter={() => setIsHovered(true)}
@@ -64,7 +64,7 @@ const BlogCardNew = ({
             alt={title}
             fill={true}
             sizes='100vw, 100vh'
-            className='h-full w-full transform object-cover transition-transform duration-300 group-hover:scale-105 group-hover:blur-sm'
+            className='h-full w-full transform object-cover object-left transition-transform duration-300 group-hover:scale-105 group-hover:blur-sm'
           />
           <div className='absolute inset-0 bg-gradient-to-b from-black/20 to-black opacity-80 transition-opacity duration-300'></div>
         </div>
@@ -101,8 +101,8 @@ const BlogCardNew = ({
             <div className='flex justify-between gap-4 px-0.5 text-neutral-400'>
               <Tooltip title='by aulianza'>
                 <Image
-                  src='/images/aulianza-new.png'
-                  alt='Ryan Aulia'
+                  src='/images/kyle.png'
+                  alt='Kyle Dominic Mendoza'
                   width={25}
                   height={25}
                   rounded='rounded-full'

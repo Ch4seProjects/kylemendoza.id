@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useSWR from 'swr';
 import { useDebounce } from 'usehooks-ts';
 
@@ -8,51 +8,54 @@ import EmptyState from '@/common/components/elements/EmptyState';
 import Pagination from '@/common/components/elements/Pagination';
 import SearchBar from '@/common/components/elements/SearchBar';
 import BlogCardNewSkeleton from '@/common/components/skeleton/BlogCardNewSkeleton';
-import { BlogItemProps } from '@/common/types/blog';
+import { BlogItemProps, MediumFeed, MediumPost } from '@/common/types/blog';
 import { fetcher } from '@/services/fetcher';
 
 import BlogCardNew from './BlogCardNew';
 import BlogFeaturedSection from './BlogFeaturedSection';
 
 const BlogListNew = () => {
-  const [page, setPage] = useState<number>(1);
+  // const [page, setPage] = useState<number>(1);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const router = useRouter();
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  const { data, error, mutate, isValidating } = useSWR(
-    `/api/blog?page=${page}&per_page=6&search=${debouncedSearchTerm}`,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-      refreshInterval: 0,
-    },
-  );
+  // const { data, error, mutate, isValidating } = useSWR(
+  //   `/api/blog?page=${page}&per_page=6&search=${debouncedSearchTerm}`,
+  //   fetcher,
+  //   {
+  //     revalidateOnFocus: false,
+  //     refreshInterval: 0,
+  //   },
+  // );
+  const { data, error, isLoading } = useSWR(`/api/blog`, fetcher, {
+    revalidateOnFocus: false,
+    refreshInterval: 0,
+  });
 
-  const {
-    posts: blogData = [],
-    total_pages: totalPages = 1,
-    total_posts = 0,
-  } = data?.data || {};
+  const feeds: MediumPost[] = useMemo(() => {
+    console.log('data: ', data);
+    return data?.data?.feeds || [];
+  }, [data]);
 
-  const handlePageChange = async (newPage: number) => {
-    await mutate();
-    router.push(
-      {
-        pathname: '/blog',
-        query: { page: newPage, search: debouncedSearchTerm },
-      },
-      undefined,
-      { shallow: true },
-    );
-    setPage(newPage);
-  };
+  // const handlePageChange = async (newPage: number) => {
+  //   await mutate();
+  //   router.push(
+  //     {
+  //       pathname: '/blog',
+  //       query: { page: newPage, search: debouncedSearchTerm },
+  //     },
+  //     undefined,
+  //     { shallow: true },
+  //   );
+  //   setPage(newPage);
+  // };
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event?.target?.value;
     setSearchTerm(searchValue);
-    setPage(1);
+    // setPage(1);
 
     router.push(
       {
@@ -66,7 +69,7 @@ const BlogListNew = () => {
 
   const handleClearSearch = () => {
     setSearchTerm('');
-    setPage(1);
+    // setPage(1);
 
     router.push(
       {
@@ -78,22 +81,22 @@ const BlogListNew = () => {
     );
   };
 
-  useEffect(() => {
-    const queryPage = Number(router.query.page);
-    if (!isNaN(queryPage) && queryPage !== page) {
-      setPage(queryPage);
-    }
-  }, [page, router.query.page, searchTerm]);
+  // useEffect(() => {
+  //   const queryPage = Number(router.query.page);
+  //   if (!isNaN(queryPage) && queryPage !== page) {
+  //     setPage(queryPage);
+  //   }
+  // }, [page, router.query.page, searchTerm]);
 
   const renderEmptyState = () =>
-    !isValidating &&
-    (!data?.status || blogData.length === 0) && (
+    !isLoading &&
+    (!data?.status || feeds.length === 0) && (
       <EmptyState message={error ? 'Error loading posts' : 'No Post Found.'} />
     );
 
   return (
     <div className='space-y-10'>
-      <BlogFeaturedSection />
+      {/* <BlogFeaturedSection /> */}
 
       <div className='space-y-5'>
         <div className='mb-6 flex flex-col items-center justify-between gap-3 sm:flex-row'>
@@ -111,7 +114,7 @@ const BlogListNew = () => {
               </h4>
             )}
             <span className='rounded-full bg-neutral-300 px-2 py-1  text-xs text-neutral-900 dark:bg-neutral-700 dark:text-neutral-50'>
-              {total_posts}
+              {feeds?.length ?? 0}
             </span>
           </div>
           <SearchBar
@@ -122,11 +125,11 @@ const BlogListNew = () => {
         </div>
 
         <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3'>
-          {!isValidating ? (
+          {!isLoading ? (
             <>
-              {blogData.map((item: BlogItemProps, index: number) => (
+              {feeds?.map((item, index) => (
                 <motion.div
-                  key={item.id}
+                  key={item.title}
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -144,13 +147,13 @@ const BlogListNew = () => {
           )}
         </div>
 
-        {!isValidating && data?.status && (
+        {/* {!isLoading && data?.status && (
           <Pagination
             totalPages={totalPages}
             currentPage={page}
             onPageChange={handlePageChange}
           />
-        )}
+        )} */}
 
         {renderEmptyState()}
       </div>

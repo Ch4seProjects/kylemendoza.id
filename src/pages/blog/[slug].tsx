@@ -7,9 +7,10 @@ import { useEffect } from 'react';
 import BackButton from '@/common/components/elements/BackButton';
 import Container from '@/common/components/elements/Container';
 import { formatExcerpt } from '@/common/helpers';
-import { BlogDetailProps } from '@/common/types/blog';
+import { BlogDetailProps, MediumPost } from '@/common/types/blog';
 import BlogDetail from '@/modules/blog/components/BlogDetail';
 import { getBlogDetail } from '@/services/blog';
+import { getMediumBlogDetail } from '@/services/medium';
 
 const GiscusComment = dynamic(
   () => import('@/modules/blog/components/GiscusComment'),
@@ -17,48 +18,52 @@ const GiscusComment = dynamic(
 
 interface BlogDetailPageProps {
   blog: {
-    data: BlogDetailProps;
+    data: MediumPost;
   };
 }
 
 const BlogDetailPage: NextPage<BlogDetailPageProps> = ({ blog }) => {
-  const blogData = blog?.data || {};
+  const blogData: MediumPost = blog?.data;
 
-  const slug = `blog/${blogData?.slug}?id=${blogData?.id}`;
+  const urlWithoutQuery = blogData?.link.split('?')[0];
+  const origSlug = urlWithoutQuery?.split('/').pop();
+  const id = urlWithoutQuery?.split('-').pop();
+
+  const slug = `blog/${origSlug}?id=${id}`;
   const canonicalUrl = `https://aulianza.id/${slug}`;
-  const description = formatExcerpt(blogData?.excerpt?.rendered);
+  // const description = formatExcerpt(blogData?.excerpt?.rendered);
 
-  const incrementViews = async () => {
-    await axios.post(`/api/views?&slug=${blogData?.slug}`);
-  };
+  // const incrementViews = async () => {
+  //   await axios.post(`/api/views?&slug=${blogData?.slug}`);
+  // };
 
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'production') {
-      incrementViews();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   if (process.env.NODE_ENV === 'production') {
+  //     incrementViews();
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
     <>
       <NextSeo
-        title={`${blogData?.title?.rendered} - Blog Ryan Aulia`}
-        description={description}
+        title={`${blogData?.title} - Blog Kyle Dominic Mendoza`}
+        description={'Medium Blog'}
         canonical={canonicalUrl}
         openGraph={{
           type: 'article',
           article: {
-            publishedTime: blogData?.date,
-            modifiedTime: blogData?.date,
-            authors: ['Ryan Aulia', 'aulianza'],
+            publishedTime: blogData?.pubDate,
+            modifiedTime: blogData?.pubDate,
+            authors: ['Kyle Dominic Mendoza'],
           },
           url: canonicalUrl,
           images: [
             {
-              url: blogData?.featured_image_url,
+              url: '/images/blog-placeholder.png',
             },
           ],
-          siteName: 'aulianza blog',
+          siteName: 'Kyle Dominic Mendoza blog',
         }}
       />
       <Container data-aos='fade-up'>
@@ -86,9 +91,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  const response = await getBlogDetail(parseInt(blogId));
+  const response = await getMediumBlogDetail(blogId);
 
-  if (response?.status === 404) {
+  if (response?.status === 500) {
     return {
       redirect: {
         destination: '/404',

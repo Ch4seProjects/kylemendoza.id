@@ -73,20 +73,24 @@ const BlogHeader = ({
         </div>
 
         <div className='flex items-center gap-5'>
-          <div className='flex items-center gap-1 font-medium'>
-            <ViewIcon size={16} />
-            <div className='ml-0.5 flex gap-1'>
-              <span>{page_views_count?.toLocaleString() || '-'}</span>
-              <span>Views</span>
+          {page_views_count && (
+            <div className='flex items-center gap-1 font-medium'>
+              <ViewIcon size={16} />
+              <div className='ml-0.5 flex gap-1'>
+                <span>{page_views_count?.toLocaleString() || '-'}</span>
+                <span>Views</span>
+              </div>
             </div>
-          </div>
-          <div className='flex items-center gap-1 font-medium'>
-            <ClockIcon size={16} />
-            <div className='ml-0.5 flex gap-1'>
-              <span>{reading_time_minutes}</span>
-              <span>Minutes Read</span>
+          )}
+          {reading_time_minutes && (
+            <div className='flex items-center gap-1 font-medium'>
+              <ClockIcon size={16} />
+              <div className='ml-0.5 flex gap-1'>
+                <span>{reading_time_minutes}</span>
+                <span>Minutes Read</span>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>
